@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محاسبات مالی</title>
+</head>
+<body>
+    <h1>محاسبات مالی بر اساس فرمول‌ها</h1>
+
+    <form id="form">
+        <label for="tadadVahid">تعداد واحد:</label>
+        <input type="number" id="tadadVahid" required><br><br>
+
+        <label for="na">نرخ NAV:</label>
+        <input type="number" id="na" required><br><br>
+
+        <label for="mablaghVarizi">مبلغ واریزی:</label>
+        <input type="number" id="mablaghVarizi" required><br><br>
+
+        <label for="sudSood">درصد سود صندوق:</label>
+        <input type="number" id="sudSood" required><br><br>
+
+        <label for="tadadRoozMah">تعداد روزهای ماه:</label>
+        <input type="number" id="tadadRoozMah" required><br><br>
+
+        <label for="tadadRoozSaal">تعداد روزهای سال:</label>
+        <input type="number" id="tadadRoozSaal" required><br><br>
+
+        <label for="tadadRoozHozoor">تعداد روز حضور:</label>
+        <input type="number" id="tadadRoozHozoor" required><br><br>
+
+        <label for="nSood">نرخ سود:</label>
+        <input type="number" id="nSood" required><br><br>
+
+        <button type="submit">محاسبه</button>
+    </form>
+
+    <h2>نتایج:</h2>
+    <p id="result"></p>
+
+    <script>
+        document.getElementById("form").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            // گرفتن ورودی‌ها
+            let tadadVahid = parseFloat(document.getElementById("tadadVahid").value);
+            let na = parseFloat(document.getElementById("na").value);
+            let mablaghVarizi = parseFloat(document.getElementById("mablaghVarizi").value);
+            let sudSood = parseFloat(document.getElementById("sudSood").value);
+            let tadadRoozMah = parseFloat(document.getElementById("tadadRoozMah").value);
+            let tadadRoozSaal = parseFloat(document.getElementById("tadadRoozSaal").value);
+            let tadadRoozHozoor = parseFloat(document.getElementById("tadadRoozHozoor").value);
+            let nSood = parseFloat(document.getElementById("nSood").value);
+
+            // فرمول‌ها
+
+            // سود ماهانه گنجینه و اندوخته
+            let sudMahane = (tadadVahid * 1000000 * tadadRoozMah * sudSood) / tadadRoozSaal;
+
+            // تتمه
+            let teme = mablaghVarizi - (tadadVahid * na);
+
+            // تتمه در دل سود
+            let temeDarDelSud = (na - 1000000) * tadadVahid;
+
+            // درصد ابطال (با داشتن مبلغ واریزی سود)
+            let darkhastAbtal = ((na - 1000000) * tadadRoozSaal) / (tadadVahid * 1000000 * tadadRoozHozoor) * 100;
+
+            // درصد ابطال (بدون داشتن مبلغ واریزی سود)
+            let darkhastAbtalBezMablagh = ((na - 1000000) / (tadadVahid * 1000000 * tadadRoozHozoor)) * 100;
+
+            // مبلغ سود تداوم و طلا
+            let mablaghSudTadaom = (na - 1000000) * tadadVahid;
+
+            // درصد سود یک ماه طلا و تداوم
+            let darkhastSoodYekMah = ((na - 1000000) / na) * 100;
+
+            // سود موثر تداوم
+            let sudMoaserTadaom = (nSood * tadadRoozSaal) / tadadRoozHozoor;
+
+            // نمایش نتایج
+            document.getElementById("result").innerHTML = `
+                <strong>نتایج:</strong><br>
+                سود ماهانه گنجینه و اندوخته: ${sudMahane}<br>
+                تتمه: ${teme}<br>
+                تتمه در دل سود: ${temeDarDelSud}<br>
+                درصد ابطال (با داشتن مبلغ واریزی سود): ${darkhastAbtal}%<br>
+                درصد ابطال (بدون داشتن مبلغ واریزی سود): ${darkhastAbtalBezMablagh}%<br>
+                مبلغ سود تداوم و طلا: ${mablaghSudTadaom}<br>
+                درصد سود یک ماه طلا و تداوم: ${darkhastSoodYekMah}%<br>
+                سود موثر تداوم: ${sudMoaserTadaom}
+            `;
+        });
+    </script>
+</body>
+</html>
